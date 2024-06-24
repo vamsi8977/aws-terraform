@@ -16,6 +16,6 @@ module "win_ec2" {
   vpc_id                = "vpc-04455ebb614d65c23"
   subnet_ids            = ["subnet-03d56fcd682550ca0"]
   availability_zones    = ["us-east-1b"]
-  source                = "../../modules/ec2_windows"
+  source                = "../modules/ec2_windows"
   key_name              = "develop_aws"
 }

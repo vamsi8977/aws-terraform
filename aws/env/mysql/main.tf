@@ -14,7 +14,7 @@ module "mysql" {
   subnet_ids            = ["subnet-03d56fcd682550ca0","subnet-05da606a37b0be2c4"]
   region                = "us-east-1"
   availability_zone     = ["us-east-1b","us-east-1c"]
-  source                = "../../modules/mysql"
+  source                = "../modules/mysql"
   db_name               = "mysqlaws"
   database_engine       = "MySQL"
   database_version      = "8.0.32"

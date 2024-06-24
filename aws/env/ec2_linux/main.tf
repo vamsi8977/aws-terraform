@@ -14,7 +14,7 @@ module "linux_ec2" {
   ec2_instance_count    = "1"
   instance_type         = "t2.micro"
   availability_zones    = ["us-east-1a"]
-  source                = "../../../modules/ec2_linux"
+  source                = "../../modules/ec2_linux"
   key_name              = "develop_aws"
   env                   = "develop"
   ami                   = "ami-080e1f13689e07408"
