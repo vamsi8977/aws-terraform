@@ -3,7 +3,7 @@ provider "aws" {
 }
 terraform {
   backend "s3" {
-    bucket = "develop-infra-core"
+    bucket = "gvs-s3bucket-111-test"
     key    = "terraform/linux_ec2/state/terraform.tfstate"
     region = "us-east-1"
     encrypt        = true
