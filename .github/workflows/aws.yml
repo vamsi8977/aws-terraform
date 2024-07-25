@@ -1,4 +1,4 @@
-name: Terraform Pipeline
+name: 'Terraform Pipeline'
 
 on:
   push:
@@ -31,52 +31,38 @@ on:
           - destroy -auto-approve
           - refresh
 
+permissions:
+  contents: read
+
 jobs:
-  build:
+  terraform:
+    name: 'Terraform'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
+    environment: production
 
     steps:
-    - name: Checkout repository
+    - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v2
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
       with:
         terraform_version: 1.2.3
 
-    - name: Debug inputs
+    - name: Debug Inputs
       run: |
         echo "AWS_SERVICE: ${{ github.event.inputs.aws_service }}"
         echo "FUNCTION: ${{ github.event.inputs.function }}"
 
-    - name: Verify and Run Terraform
-      run: |
-        AWS_SERVICE="${{ github.event.inputs.aws_service }}"
-        FUNCTION="${{ github.event.inputs.function }}"
-        
-        if [ -z "$AWS_SERVICE" ] || [ -z "$FUNCTION" ]; then
-          echo "AWS_SERVICE or FUNCTION is not set correctly"
-          exit 1
-        fi
-        
-        echo "Running on $AWS_SERVICE"
-        ls -la env/$AWS_SERVICE
-        cd env/$AWS_SERVICE
-        terraform init -reconfigure
-        terraform validate
-        terraform $FUNCTION
+    - name: Terraform Init
+      run: terraform init
 
-    - name: Post Success
-      if: success()
-      run: echo "The build is Green, Infrastructure is created."
+    - name: Terraform Format
+      run: terraform fmt -check
 
-    - name: Post Failure
-      if: failure()
-      run: echo "The build failed."
+    - name: Terraform Plan
+      run: terraform plan -input=false
 
-    - name: Clean up workspace
-      if: always()
-      run: git clean -fdx
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
