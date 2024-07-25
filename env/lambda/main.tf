@@ -4,7 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket  = "gvs-s3bucket-111-test"
+    bucket  = "develop-infra-core"
     key     = "terraform/lambda/state/terraform.tfstate"
     region  = "us-east-1"
     encrypt = true
@@ -23,7 +23,7 @@ variable "lambda_handler" {
 
 variable "s3_bucket_name" {
   description = "Name of the S3 bucket"
-  default     = "gvs-s3bucket-111-test"
+  default     = "develop-infra-core"
 }
 
 variable "s3_object_key" {
