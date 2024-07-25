@@ -24,7 +24,7 @@ pipeline {
       steps {
         echo 'Checking out project from Bitbucket....'
         cleanWs()
-        git(url: 'git@github.com:vamsi8977/terraform.git', branch: 'main')
+        git(url: 'git@github.com:vamsi8977/aws-terraform.git', branch: 'main')
       }
     }
     stage('Validate') {
