@@ -1,0 +1,64 @@
+name: Terraform Pipeline
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.2.3
+    - name: Validate Tools
+      run: terraform -v
+    - name: Run Terraform
+      env:
+        AWS_SERVICE: ${{ github.event.inputs.aws_service }}
+        FUNCTION: ${{ github.event.inputs.function }}
+      run: |
+        echo "Running on $AWS_SERVICE"
+        cd env/$AWS_SERVICE
+        terraform init -reconfigure
+        terraform validate
+        terraform $FUNCTION
+    - name: Post Success
+      if: success()
+      run: echo "The build is Green, Infrastructure is created."
+    - name: Post Failure
+      if: failure()
+      run: echo "The build failed."
+    - name: Clean up workspace
+      if: always()
+      run: git clean -fdx
+inputs:
+  aws_service:
+    description: 'Select AWS service'
+    required: true
+    default: 's3'
+    type: choice
+    options:
+      - s3
+      - vpc
+      - ec2_linux
+      - ec2_windows
+      - mysql
+      - lambda
+      - k8
+  function:
+    description: 'Select function'
+    required: true
+    default: 'plan'
+    type: choice
+    options:
+      - plan
+      - apply -auto-approve
+      - destroy -auto-approve
+      - refresh

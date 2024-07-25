@@ -43,7 +43,7 @@ pipeline {
           script {
             if (params.aws_service == 'ec2_linux') {
               echo "Running on ec2_linux"
-              dir("aws/env/${params.aws_service}") {
+              dir("env/${params.aws_service}") {
                 sh '''
                   terraform init -reconfigure
                   terraform validate
@@ -51,7 +51,7 @@ pipeline {
               }
             } else if (params.aws_service == 'ec2_windows') {
               echo "Running on ec2_windows"
-              dir("aws/env/${params.aws_service}") {
+              dir("env/${params.aws_service}") {
                 sh '''
                   terraform init -reconfigure
                   terraform validate
@@ -59,7 +59,7 @@ pipeline {
               }
             } else if (params.aws_service == 'vpc') {
               echo "Running on vpc"
-              dir("aws/env/${params.aws_service}") {
+              dir("env/${params.aws_service}") {
                 sh '''
                   terraform init -reconfigure
                   terraform validate
@@ -67,7 +67,7 @@ pipeline {
               }
             } else if (params.aws_service == 's3') {
               echo "Running on s3"
-              dir("aws/env/${params.aws_service}") {
+              dir("env/${params.aws_service}") {
                 sh '''
                   terraform init -reconfigure
                   terraform validate
@@ -75,7 +75,7 @@ pipeline {
               }
             } else if (params.aws_service == 'mysql') {
               echo "Running on mysql"
-              dir("aws/env/${params.aws_service}") {
+              dir("env/${params.aws_service}") {
                 sh '''
                   terraform init -reconfigure
                   terraform validate
@@ -83,7 +83,7 @@ pipeline {
               }
             } else if (params.aws_service == 'lambda') {
               echo "Running on lambda"
-              dir("aws/env/${params.aws_service}") {
+              dir("env/${params.aws_service}") {
                 sh '''
                   terraform init -reconfigure
                   terraform validate
@@ -91,7 +91,7 @@ pipeline {
               }
             } else if (params.aws_service == 'k8') {
               echo "Running on k8"
-              dir("aws/env/${params.aws_service}") {
+              dir("env/${params.aws_service}") {
                 sh '''
                   terraform init -reconfigure
                   terraform validate
